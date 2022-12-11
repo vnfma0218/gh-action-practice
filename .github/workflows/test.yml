@@ -1,0 +1,36 @@
+name: Deploy Project
+on: [push]
+jobs:
+  test:
+    runs-on: macos-12
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run Tests
+        run: npm test
+  lint:
+    runs-on: macos-12
+     steps:
+     - name: Get code
+        uses: actions/checkout@v3
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run lint
+        uses: wearerequired/lint-action@v2
+        with:
+          eslint: true
+      
+  deploy:
+    needs: test
+    runs-on: macos-12
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build Project
+        run: npm run build
+      - name: Deploy
+        run: echo "Deploying.."
